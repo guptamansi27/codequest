@@ -1,0 +1,50 @@
+server:
+  port: ${SERVER_PORT:8000}
+  servlet:
+    context-path: /
+
+spring:
+  application:
+    name: codequest-backend
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:${DATABASE_URL:jdbc:postgresql://${POSTGRES_HOST:127.0.0.1}:${POSTGRES_PORT:5432}/${POSTGRES_DB:abc}}}
+    username: ${SPRING_DATASOURCE_USERNAME:${POSTGRES_USER:postgres}}
+    password: ${SPRING_DATASOURCE_PASSWORD:${POSTGRES_PASSWORD:root}}
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        format_sql: false
+        jdbc:
+          time_zone: UTC
+  flyway:
+    enabled: ${FLYWAY_ENABLED:true}
+    baseline-on-migrate: true
+    baseline-version: 0
+    locations: classpath:db/migration
+  servlet:
+    multipart:
+      max-file-size: ${CODEQUEST_MAX_UPLOAD_SIZE:10MB}
+      max-request-size: ${CODEQUEST_MAX_UPLOAD_SIZE:10MB}
+
+codequest:
+  jwt:
+    secret: ${CODEQUEST_JWT_SECRET:codequest-local-development-secret-key-change-before-production}
+    access-token-minutes: ${CODEQUEST_JWT_ACCESS_MINUTES:60}
+    refresh-token-days: ${CODEQUEST_JWT_REFRESH_DAYS:7}
+  cors:
+    allowed-origins: ${CODEQUEST_CORS_ALLOWED_ORIGINS:${DJANGO_CORS_ALLOWED_ORIGINS:http://localhost:3000,http://127.0.0.1:3000,http://localhost:5173,http://127.0.0.1:5173,http://10.103.171.248:5173}}
+  admin:
+    full-name: ${CODEQUEST_ADMIN_FULL_NAME:System Administrator}
+    email: ${CODEQUEST_ADMIN_EMAIL:admin@codequest.com}
+    password: ${CODEQUEST_ADMIN_PASSWORD:Admin@123}
+  ai:
+    api-url: ${CODEQUEST_AI_API_URL:${OLLAMA_API_URL:${API_PROVIDER:http://172.20.203.198:7777/api/generate}}}
+    api-key: ${CODEQUEST_AI_API_KEY:${AI_API_KEY:}}
+    model: ${CODEQUEST_AI_MODEL:${OLLAMA_MODEL:codellama:7b}}
+
+logging:
+  level:
+    com.codequest: ${CODEQUEST_LOG_LEVEL:INFO}

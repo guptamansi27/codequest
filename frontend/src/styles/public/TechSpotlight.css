@@ -1,0 +1,184 @@
+.tech-spotlight {
+  padding: 60px 20px;
+  background: var(--bg-lighter);
+}
+
+.spotlight-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  background: var(--bg-white);
+  border-radius: 12px;
+  padding: 40px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.spotlight-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 30px;
+}
+
+.spotlight-icon {
+  font-size: 28px;
+}
+
+.spotlight-header h2 {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--text-header-dark);
+  margin: 0;
+}
+
+.spotlight-content {
+  min-height: 150px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.spotlight-title {
+  font-size: 48px;
+  font-weight: 800;
+  margin: 0 0 16px 0;
+  transition: all 0.3s ease;
+}
+
+.spotlight-title.blue {
+  color: var(--primary-blue);
+}
+
+.spotlight-title.green {
+  color: var(--accent-green-alt);
+}
+
+.spotlight-title.orange {
+  color: var(--accent-orange);
+}
+
+.spotlight-title.black {
+  color: var(--text-header-dark);
+}
+
+.spotlight-description {
+  font-size: 18px;
+  color: var(--text-gray);
+  margin: 0;
+  line-height: 1.6;
+  max-width: 800px;
+  transition: all 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.spotlight-dots {
+  display: flex;
+  gap: 12px;
+  margin-top: 30px;
+  justify-content: flex-start;
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: none;
+  background: var(--gray-medium);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 0;
+}
+
+.dot:hover {
+  background: var(--gray-light);
+  transform: scale(1.2);
+}
+
+.dot.active {
+  background: var(--primary-blue);
+  width: 32px;
+  border-radius: 6px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .spotlight-container {
+    padding: 30px 20px;
+  }
+
+  .spotlight-header h2 {
+    font-size: 20px;
+  }
+
+  .spotlight-title {
+    font-size: 36px;
+  }
+
+  .spotlight-description {
+    font-size: 16px;
+  }
+
+  .spotlight-content {
+    min-height: 120px;
+  }
+}
+
+@media (max-width: 480px) {
+  .tech-spotlight {
+    padding: 40px 15px;
+  }
+
+  .spotlight-container {
+    padding: 25px 15px;
+    border-radius: 8px;
+  }
+
+  .spotlight-header {
+    margin-bottom: 20px;
+  }
+
+  .spotlight-icon {
+    font-size: 24px;
+  }
+
+  .spotlight-header h2 {
+    font-size: 18px;
+  }
+
+  .spotlight-title {
+    font-size: 28px;
+    margin-bottom: 12px;
+  }
+
+  .spotlight-description {
+    font-size: 14px;
+  }
+
+  .spotlight-content {
+    min-height: 100px;
+  }
+
+  .spotlight-dots {
+    margin-top: 20px;
+    gap: 10px;
+  }
+
+  .dot {
+    width: 10px;
+    height: 10px;
+  }
+
+  .dot.active {
+    width: 28px;
+  }
+}

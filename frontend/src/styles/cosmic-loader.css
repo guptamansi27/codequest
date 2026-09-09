@@ -1,0 +1,275 @@
+/* Shared “galaxy orbit” loader — use app-wide for consistent loading UX */
+
+.cosmic-loader-orbits {
+  position: relative;
+  width: 72px;
+  height: 72px;
+}
+
+.cosmic-loader-orbits span,
+.cosmic-loader-orbits i {
+  position: absolute;
+  inset: 50%;
+  display: block;
+  border-radius: 999px;
+  transform: translate(-50%, -50%);
+}
+
+.cosmic-loader-orbits span {
+  width: 64px;
+  height: 24px;
+  border: 2px solid rgba(96, 165, 250, 0.55);
+  animation: cosmic-loader-orbit 1.35s linear infinite;
+}
+
+.cosmic-loader-orbits span:nth-child(2) {
+  border-color: rgba(34, 211, 238, 0.46);
+  animation-duration: 1.65s;
+  transform: translate(-50%, -50%) rotate(62deg);
+}
+
+.cosmic-loader-orbits span:nth-child(3) {
+  border-color: rgba(250, 204, 21, 0.44);
+  animation-duration: 1.95s;
+  transform: translate(-50%, -50%) rotate(-54deg);
+}
+
+.cosmic-loader-orbits i {
+  width: 18px;
+  height: 18px;
+  background: #60a5fa;
+  box-shadow: 0 0 26px rgba(96, 165, 250, 0.9);
+  animation: cosmic-loader-pulse 1.2s ease-in-out infinite;
+}
+
+@keyframes cosmic-loader-orbit {
+  to {
+    rotate: 360deg;
+  }
+}
+
+@keyframes cosmic-loader-pulse {
+  0%,
+  100% {
+    transform: translate(-50%, -50%) scale(0.86);
+    opacity: 0.82;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.15);
+    opacity: 1;
+  }
+}
+
+@keyframes cosmic-loader-enter-embed {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -46%) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+@keyframes cosmic-loader-enter-page {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Embedded overlay (galaxy canvas, modals) */
+.cosmic-loader.cosmic-loader--embed {
+  position: absolute;
+  z-index: 12;
+  top: 50%;
+  left: 50%;
+  display: grid;
+  justify-items: center;
+  gap: 10px;
+  width: min(280px, calc(100% - 48px));
+  padding: 22px 20px;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  border: 1px solid rgba(147, 197, 253, 0.22);
+  border-radius: 12px;
+  background: rgba(15, 23, 42, 0.82);
+  color: #e5eefc;
+  backdrop-filter: blur(14px);
+  box-shadow: 0 24px 70px rgba(2, 6, 23, 0.45);
+  animation: cosmic-loader-enter-embed 280ms ease both;
+}
+
+.cosmic-loader.cosmic-loader--embed strong {
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.cosmic-loader.cosmic-loader--embed p {
+  margin: 0;
+  color: #bfdbfe;
+  font-size: 12px;
+}
+
+/* Full page / dashboard main area */
+.cosmic-loader.cosmic-loader--page {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  min-height: min(72vh, 560px);
+  padding: 32px 20px;
+  text-align: center;
+  border-radius: 14px;
+  border: 1px solid #e5eaf0;
+  background: linear-gradient(165deg, #ffffff 0%, #f4f7fb 55%, #eef2f7 100%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.85);
+  animation: cosmic-loader-enter-page 360ms ease both;
+}
+
+.cosmic-loader.cosmic-loader--page .cosmic-loader-orbits span {
+  border-color: rgba(37, 99, 235, 0.45);
+}
+
+.cosmic-loader.cosmic-loader--page .cosmic-loader-orbits span:nth-child(2) {
+  border-color: rgba(14, 165, 233, 0.42);
+}
+
+.cosmic-loader.cosmic-loader--page .cosmic-loader-orbits span:nth-child(3) {
+  border-color: rgba(245, 158, 11, 0.4);
+}
+
+.cosmic-loader.cosmic-loader--page .cosmic-loader-orbits i {
+  background: #2563eb;
+  box-shadow: 0 0 22px rgba(37, 99, 235, 0.55);
+}
+
+.cosmic-loader.cosmic-loader--page strong {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.cosmic-loader.cosmic-loader--page p {
+  margin: 0;
+  font-size: 0.875rem;
+  color: #64748b;
+  max-width: 320px;
+}
+
+.cosmic-loader.cosmic-loader--compact {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 200px;
+  padding: 28px 16px;
+  border-radius: 12px;
+  border: 1px dashed #cbd5e1;
+  background: #f8fafc;
+}
+
+.cosmic-loader.cosmic-loader--compact strong {
+  font-size: 0.95rem;
+  color: #334155;
+}
+
+.cosmic-loader.cosmic-loader--compact p {
+  margin: 0;
+  font-size: 0.8rem;
+  color: #64748b;
+}
+
+.cosmic-loader-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  min-width: 0;
+}
+
+/* Row layout — e.g. chat “typing” row inside a message bubble */
+.cosmic-loader.cosmic-loader--inline {
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 12px;
+  min-height: 0;
+  padding: 0;
+  margin: 0;
+  text-align: left;
+  border: none;
+  background: transparent;
+  box-shadow: none;
+  animation: none;
+}
+
+.cosmic-loader.cosmic-loader--inline .cosmic-loader-orbits {
+  flex-shrink: 0;
+  transform: scale(0.4);
+  transform-origin: center center;
+}
+
+.cosmic-loader.cosmic-loader--inline .cosmic-loader-text {
+  align-items: flex-start;
+  gap: 0;
+}
+
+.cosmic-loader.cosmic-loader--inline strong {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #334155;
+}
+
+.cosmic-loader.cosmic-loader--inline p {
+  margin: 2px 0 0;
+  font-size: 0.78rem;
+  color: #64748b;
+}
+
+/* Icon-only — matches ~20px control icons in buttons */
+.cosmic-loader.cosmic-loader--icon {
+  display: inline-flex;
+  vertical-align: middle;
+  align-items: center;
+  justify-content: center;
+  min-height: 0;
+  padding: 0;
+  margin: 0;
+  border: none;
+  background: transparent;
+  box-shadow: none;
+  line-height: 0;
+}
+
+.cosmic-loader.cosmic-loader--icon .cosmic-loader-orbits {
+  width: 22px;
+  height: 22px;
+  transform: scale(0.32);
+  transform-origin: center center;
+}
+
+.cosmic-loader.cosmic-loader--icon .cosmic-loader-orbits span {
+  border-color: rgba(37, 99, 235, 0.5);
+}
+
+.cosmic-loader.cosmic-loader--icon .cosmic-loader-orbits span:nth-child(2) {
+  border-color: rgba(14, 165, 233, 0.45);
+}
+
+.cosmic-loader.cosmic-loader--icon .cosmic-loader-orbits span:nth-child(3) {
+  border-color: rgba(245, 158, 11, 0.42);
+}
+
+.cosmic-loader.cosmic-loader--icon .cosmic-loader-orbits i {
+  background: #2563eb;
+  box-shadow: 0 0 12px rgba(37, 99, 235, 0.55);
+}

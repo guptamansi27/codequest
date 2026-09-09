@@ -1,0 +1,128 @@
+.activity-delete-button {
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(239, 68, 68, 0.22);
+  border-radius: 8px;
+  color: #dc2626;
+  background: rgba(254, 242, 242, 0.92);
+  cursor: pointer;
+  transition:
+    background-color 0.16s ease,
+    border-color 0.16s ease,
+    color 0.16s ease,
+    transform 0.16s ease;
+}
+
+.activity-delete-button:hover {
+  color: #b91c1c;
+  background: #fee2e2;
+  border-color: rgba(220, 38, 38, 0.36);
+  transform: translateY(-1px);
+}
+
+.activity-delete-button:focus-visible,
+.activity-delete-modal button:focus-visible {
+  outline: 3px solid rgba(37, 99, 235, 0.28);
+  outline-offset: 2px;
+}
+
+.activity-delete-button--section {
+  flex: 0 0 auto;
+  margin-left: auto;
+}
+
+.activity-delete-button > svg,
+.recent-report-panel header .activity-delete-button > svg {
+  color: currentColor;
+}
+
+.activity-delete-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1200;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgba(15, 23, 42, 0.45);
+  backdrop-filter: blur(4px);
+}
+
+.activity-delete-modal {
+  position: relative;
+  width: min(100%, 380px);
+  padding: 22px;
+  border-radius: 8px;
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  background: #ffffff;
+  box-shadow: 0 22px 70px rgba(15, 23, 42, 0.22);
+}
+
+.activity-delete-modal h3 {
+  margin: 0;
+  color: #0f172a;
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.activity-delete-modal p {
+  margin: 10px 0 0;
+  color: #475569;
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.activity-delete-modal p strong {
+  color: #111827;
+}
+
+.activity-delete-modal-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 30px;
+  height: 30px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  color: #64748b;
+  background: #ffffff;
+  cursor: pointer;
+}
+
+.activity-delete-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.activity-delete-modal-actions button {
+  min-height: 38px;
+  padding: 0 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.activity-delete-modal-secondary {
+  border: 1px solid #cbd5e1;
+  color: #334155;
+  background: #ffffff;
+}
+
+.activity-delete-modal-danger {
+  border: 1px solid #dc2626;
+  color: #ffffff;
+  background: #dc2626;
+}
+
+.activity-delete-modal-danger:hover {
+  background: #b91c1c;
+  border-color: #b91c1c;
+}

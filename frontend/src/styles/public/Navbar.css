@@ -1,0 +1,94 @@
+/* Navbar Styles */
+.navbar {
+  background: var(--bg-white);
+  box-shadow: 0 2px 12px rgba(0, 51, 102, 0.08);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  border-bottom: 1px solid var(--secondary-blue);
+}
+
+.navbar-container {
+  max-width: min(1200px, 100%);
+  margin: 0 auto;
+  padding: clamp(0.75rem, 2vw, 1rem) clamp(1rem, 3vw, 2rem);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem 1rem;
+}
+
+.navbar-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: clamp(1.15rem, 1.2vw + 0.85rem, 1.5rem);
+  font-weight: 800;
+  color: var(--primary-dark);
+  cursor: pointer;
+  min-width: 0;
+}
+
+.logo-icon,
+.logo-text {
+  color: var(--primary-dark);
+}
+
+.logo-icon {
+  font-size: 1.8rem;
+  font-weight: bold;
+}
+
+.navbar-menu {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1rem;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.nav-btn {
+  padding: 0.6rem 1.5rem;
+  border: none;
+  background: transparent;
+  color: var(--primary-dark);
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border-radius: 6px;
+}
+
+.nav-btn:hover {
+  color: var(--primary-blue-alt);
+  background: rgba(0, 82, 204, 0.1);
+}
+
+.login-btn {
+  background: var(--primary-dark);
+  color: var(--bg-white);
+  box-shadow: 0 4px 15px rgba(0, 51, 102, 0.3);
+}
+
+.login-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 51, 102, 0.4);
+  background: var(--primary-dark-alt);
+  color: var(--bg-white);
+}
+
+@media (max-width: 768px) {
+  .navbar-container {
+    padding: 1rem;
+  }
+
+  .navbar-logo {
+    font-size: 1.3rem;
+  }
+
+  .login-btn {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+  }
+}

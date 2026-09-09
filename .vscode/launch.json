@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-CodeQuestApplication<spring-codequest>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.codequest.backend.CodeQuestApplication",
+            "projectName": "spring-codequest",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}

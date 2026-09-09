@@ -1,0 +1,84 @@
+.not-found-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px;
+  background:
+    radial-gradient(circle at top left, rgba(37, 99, 235, 0.12), transparent 32%),
+    linear-gradient(135deg, #f8fafc 0%, #eaf2ff 100%);
+}
+
+.not-found-card {
+  width: min(100%, 460px);
+  text-align: center;
+  padding: 42px 34px;
+  border: 1px solid #dbeafe;
+  border-radius: 14px;
+  background: #ffffff;
+  box-shadow: 0 18px 50px rgba(15, 23, 42, 0.12);
+}
+
+.not-found-mark {
+  width: 64px;
+  height: 64px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  border-radius: 16px;
+  background: #eff6ff;
+  color: #2563eb;
+}
+
+.not-found-mark svg {
+  width: 34px;
+  height: 34px;
+}
+
+.not-found-kicker {
+  margin: 0 0 8px;
+  color: #2563eb;
+  font-size: 3rem;
+  line-height: 1;
+  font-weight: 900;
+}
+
+.not-found-card h1 {
+  margin: 0;
+  color: #0f172a;
+  font-size: 1.65rem;
+}
+
+.not-found-copy {
+  margin: 14px 0 28px;
+  color: #64748b;
+  line-height: 1.6;
+}
+
+.not-found-home {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 44px;
+  padding: 0 18px;
+  border: 0;
+  border-radius: 8px;
+  background: #2563eb;
+  color: #ffffff;
+  font-weight: 800;
+  cursor: pointer;
+  transition: background-color 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.not-found-home:hover {
+  background: #1d4ed8;
+  transform: translateY(-1px);
+  box-shadow: 0 12px 22px rgba(37, 99, 235, 0.22);
+}
+
+.not-found-home svg {
+  width: 18px;
+  height: 18px;
+}

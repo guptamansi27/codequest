@@ -1,0 +1,703 @@
+/* --------------------------------------------------------------------------
+   Tabbed dashboard shell — shared by Admin, SME, and User home dashboards
+   -------------------------------------------------------------------------- */
+
+:root {
+  --dash-tab-rail: linear-gradient(180deg, #eef2f6 0%, #e8edf3 100%);
+  --dash-tab-active: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+  --dash-panel-bg: linear-gradient(168deg, #ffffff 0%, #fafbfc 42%, #f4f6f9 100%);
+  --dash-panel-border: rgba(148, 163, 184, 0.35);
+  --dash-panel-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.92) inset,
+    0 16px 42px rgba(15, 23, 42, 0.07);
+  --dash-accent: #2563eb;
+}
+
+/* --- Layout chain (fills main scroll region without odd empty bands) --- */
+
+.cq-dashboard-viewport {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.cq-dashboard-viewport > .cq-dashboard-container__inner {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.cq-dashboard-viewport > .cq-dashboard-container__inner > .cq-content-wrapper {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  gap: clamp(14px, 1.5vw, 20px);
+  position: relative;
+}
+
+.cq-dashboard-viewport .dashboard-heading,
+.cq-dashboard-viewport .dashboard-header {
+  flex-shrink: 0;
+}
+
+.cq-dashboard-viewport .dashboard-heading {
+  margin-bottom: 0;
+  padding-bottom: 2px;
+}
+
+.cq-dashboard-viewport .dashboard-heading h1,
+.cq-dashboard-viewport .dashboard-header h1 {
+  letter-spacing: -0.02em;
+}
+
+.cq-dashboard-viewport .dashboard-header {
+  padding-bottom: clamp(14px, 1.6vw, 20px);
+  margin-bottom: 0;
+  border-bottom: 1px solid rgba(226, 232, 240, 0.95);
+}
+
+/* --- Tabs: segmented control --- */
+
+.cq-dash-tabs-root {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  gap: 0;
+}
+
+.cq-dash-tabs-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 140px), 1fr));
+  gap: 5px;
+  padding: 6px;
+  border-radius: 16px;
+  background: var(--dash-tab-rail);
+  border: 1px solid #dce3ec;
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.75);
+  width: 100%;
+  max-width: min(520px, 100%);
+}
+
+.cq-dash-tabs-trigger {
+  border: 0;
+  cursor: pointer;
+  font: inherit;
+  font-size: 13.5px;
+  font-weight: 650;
+  letter-spacing: 0.01em;
+  color: #64748b;
+  padding: 11px 16px;
+  border-radius: 12px;
+  background: transparent;
+  transition:
+    color 0.2s cubic-bezier(0.22, 1, 0.36, 1),
+    background 0.2s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.2s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.2s ease;
+}
+
+.cq-dash-tabs-trigger:hover {
+  color: #334155;
+  background: rgba(255, 255, 255, 0.55);
+}
+
+.cq-dash-tabs-trigger[data-state="active"] {
+  color: #0f172a;
+  background: var(--dash-tab-active);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 1) inset,
+    0 8px 22px rgba(15, 23, 42, 0.1),
+    0 1px 3px rgba(15, 23, 42, 0.06);
+  transform: translateY(-0.5px);
+}
+
+.cq-dash-tabs-trigger:focus-visible {
+  outline: 2px solid rgba(37, 99, 235, 0.45);
+  outline-offset: 2px;
+}
+
+.cq-dash-tabs-trigger--icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.cq-dash-tabs-trigger--icon svg {
+  flex-shrink: 0;
+  opacity: 0.78;
+}
+
+.cq-dash-tabs-trigger--icon[data-state="active"] svg {
+  opacity: 1;
+  color: var(--dash-accent);
+}
+
+/* --- Tab panels: single calm surface (no harsh color blocks) --- */
+
+.cq-dash-tabs-content {
+  flex: 1;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+  margin-top: clamp(12px, 1.4vw, 16px);
+  padding: clamp(14px, 1.8vw, 22px);
+  border-radius: 18px;
+  background: var(--dash-panel-bg);
+  border: 1px solid var(--dash-panel-border);
+  box-shadow: var(--dash-panel-shadow);
+  position: relative;
+}
+
+.cq-dash-tabs-content::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 18px;
+  right: 18px;
+  height: 3px;
+  border-radius: 0 0 6px 6px;
+  background: linear-gradient(90deg, transparent, var(--dash-accent), transparent);
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+.cq-dash-tabs-content:focus-visible {
+  outline: none;
+}
+
+.cq-dash-panel-stack {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(16px, 1.65vw, 22px);
+  position: relative;
+  z-index: 1;
+  min-height: min-content;
+}
+
+/* User home: two-column chart rows inside tab panels (avoid legacy fixed heights + extra scroll) */
+.cq-dash-tabs-content .chart-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(18px, 1.8vw, 26px);
+  margin-bottom: 0;
+  align-items: stretch;
+}
+
+@media (max-width: 1200px) {
+  .cq-dash-tabs-content .chart-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.cq-dash-tabs-content .chart-card {
+  min-height: 0;
+  margin-bottom: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.cq-dash-tabs-content .progress-card {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.cq-dash-tabs-content .chart-wrap.apex-chart-shell {
+  flex: 1;
+  min-height: 0;
+  height: auto;
+  margin-top: 2px;
+  padding-top: clamp(4px, 0.5vw, 8px);
+}
+
+.cq-dash-tabs-content .progress-card .language-chart-panel--apex {
+  min-height: 0;
+}
+
+.cq-dash-overview-section-label {
+  margin: clamp(8px, 1vw, 14px) 0 clamp(14px, 1.5vw, 20px);
+  font-size: 11.5px;
+  font-weight: 750;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: #64748b;
+}
+
+.chart-card-subtitle {
+  margin: 0 0 clamp(12px, 1.35vw, 18px);
+  font-size: 12.5px;
+  font-weight: 500;
+  color: #64748b;
+  line-height: 1.55;
+  max-width: 62ch;
+}
+
+/* --- User metrics: full width, refined surfaces (overrides legacy centering) --- */
+
+.cq-dashboard-container.user-home-dashboard.cq-dashboard-viewport .cq-responsive-grid.stats-grid,
+.cq-dashboard-container.user-home-dashboard.cq-dashboard-viewport .stats-grid {
+  justify-items: stretch;
+  margin-bottom: 0;
+}
+
+.cq-dashboard-container.user-home-dashboard.cq-dashboard-viewport .stat-card {
+  width: 100%;
+  max-width: none;
+  justify-self: stretch;
+  border-radius: 14px;
+  border: 1px solid #cbd5e1;
+  background: #ffffff;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.92) inset,
+    0 8px 20px rgba(15, 23, 42, 0.06);
+  transition:
+    border-color 0.22s ease,
+    box-shadow 0.22s ease,
+    transform 0.22s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.cq-dashboard-container.user-home-dashboard.cq-dashboard-viewport .stat-card:hover {
+  transform: translateY(-3px);
+  border-color: #94a3b8;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 1) inset,
+    0 14px 32px rgba(15, 23, 42, 0.1);
+}
+
+.cq-dashboard-container.user-home-dashboard.cq-dashboard-viewport .stat-card:hover .stat-icon {
+  transform: scale(1.06);
+}
+
+.cq-dashboard-container.user-home-dashboard.cq-dashboard-viewport .stat-card-blue {
+  background: linear-gradient(168deg, #bfdbfe 0%, #dbeafe 38%, #eff6ff 72%, #f8fafc 100%);
+  border: 1px solid #3b82f6;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.75) inset,
+    0 8px 20px rgba(37, 99, 235, 0.1);
+}
+
+.cq-dashboard-container.user-home-dashboard.cq-dashboard-viewport .stat-card-blue:hover {
+  border-color: #1d4ed8;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.85) inset,
+    0 16px 36px rgba(37, 99, 235, 0.18);
+}
+
+.cq-dashboard-container.user-home-dashboard.cq-dashboard-viewport .stat-card-green {
+  background: linear-gradient(168deg, #bbf7d0 0%, #dcfce7 40%, #f0fdf4 75%, #fafafa 100%);
+  border: 1px solid #22c55e;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.75) inset,
+    0 8px 20px rgba(22, 163, 74, 0.1);
+}
+
+.cq-dashboard-container.user-home-dashboard.cq-dashboard-viewport .stat-card-green:hover {
+  border-color: #15803d;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.85) inset,
+    0 16px 36px rgba(22, 163, 74, 0.16);
+}
+
+.cq-dashboard-container.user-home-dashboard.cq-dashboard-viewport .stat-card-yellow {
+  background: linear-gradient(168deg, #fde68a 0%, #fef3c7 42%, #fffbeb 78%, #fafaf9 100%);
+  border: 1px solid #d97706;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.75) inset,
+    0 8px 20px rgba(217, 119, 6, 0.1);
+}
+
+.cq-dashboard-container.user-home-dashboard.cq-dashboard-viewport .stat-card-yellow:hover {
+  border-color: #b45309;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.85) inset,
+    0 16px 36px rgba(217, 119, 6, 0.14);
+}
+
+.cq-dashboard-container.user-home-dashboard.cq-dashboard-viewport .stat-card-orange {
+  background: linear-gradient(168deg, #fed7aa 0%, #ffedd5 40%, #fff7ed 76%, #fafafa 100%);
+  border: 1px solid #ea580c;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.75) inset,
+    0 8px 20px rgba(234, 88, 12, 0.1);
+}
+
+.cq-dashboard-container.user-home-dashboard.cq-dashboard-viewport .stat-card-orange:hover {
+  border-color: #c2410c;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.85) inset,
+    0 16px 36px rgba(234, 88, 12, 0.16);
+}
+
+.cq-dashboard-container.user-home-dashboard.cq-dashboard-viewport .stat-icon {
+  width: 26px;
+  height: 26px;
+  padding: 8px;
+  border-radius: 12px;
+  background: rgba(15, 23, 42, 0.04);
+  box-sizing: content-box;
+  transition: transform 0.22s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.cq-dashboard-container.user-home-dashboard.cq-dashboard-viewport .stat-card-blue .stat-icon {
+  color: #2563eb;
+  background: rgba(37, 99, 235, 0.1);
+}
+
+.cq-dashboard-container.user-home-dashboard.cq-dashboard-viewport .stat-card-green .stat-icon {
+  color: #16a34a;
+  background: rgba(22, 163, 74, 0.1);
+}
+
+.cq-dashboard-container.user-home-dashboard.cq-dashboard-viewport .stat-card-yellow .stat-icon {
+  color: #ca8a04;
+  background: rgba(234, 179, 8, 0.12);
+}
+
+.cq-dashboard-container.user-home-dashboard.cq-dashboard-viewport .stat-card-orange .stat-icon {
+  color: #ea580c;
+  background: rgba(249, 115, 22, 0.1);
+}
+
+/* Streak card inside tab panel: warm band, not flat white */
+.cq-dash-streak-card {
+  border-radius: 16px !important;
+  border: 1px solid rgba(251, 191, 36, 0.35) !important;
+  background: linear-gradient(125deg, #fffbeb 0%, #fff7ed 45%, #ffffff 100%) !important;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.85) inset,
+    0 12px 28px rgba(234, 88, 12, 0.08) !important;
+}
+
+.cq-dash-streak-card h2 {
+  color: #9a3412;
+}
+
+/* User home — extra air inside chart cards (titles vs plot) */
+.cq-dashboard-container.user-home-dashboard.cq-dashboard-viewport .cq-dash-tabs-content .cq-section-block.dashboard-card {
+  padding: clamp(20px, 2vw, 28px) clamp(20px, 2.1vw, 28px) clamp(22px, 2.2vw, 30px);
+}
+
+.cq-dashboard-container.user-home-dashboard.cq-dashboard-viewport .cq-dash-tabs-content .dashboard-card > h2 {
+  margin: 0 0 clamp(6px, 0.65vw, 10px);
+  font-size: clamp(15px, 1.35vw, 17px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: #0f172a;
+  line-height: 1.25;
+}
+
+.cq-dashboard-container.user-home-dashboard.cq-dashboard-viewport .cq-dash-tabs-content .cq-dash-streak-card {
+  padding: clamp(18px, 1.85vw, 24px) clamp(18px, 2vw, 26px) !important;
+  margin-top: clamp(2px, 0.4vw, 6px);
+}
+
+.cq-dashboard-container.user-home-dashboard.cq-dashboard-viewport .cq-dash-tabs-content .language-chart-panel--apex {
+  margin-top: clamp(6px, 0.8vw, 12px);
+  gap: clamp(18px, 2vw, 28px);
+}
+
+/* User: charts / progress inside tab surface */
+.cq-dash-tabs-content .dashboard-card,
+.cq-dash-tabs-content .chart-card {
+  border-radius: 16px;
+  border: 1px solid #e4e9f0;
+  background: #ffffff;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.92) inset,
+    0 12px 30px rgba(15, 23, 42, 0.05);
+}
+
+.cq-dash-tabs-content .dashboard-card:hover,
+.cq-dash-tabs-content .chart-card:hover {
+  border-color: #cbd5e1;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 1) inset,
+    0 16px 36px rgba(15, 23, 42, 0.08);
+}
+
+/* --- Charts --- */
+
+.apex-chart-shell {
+  width: 100%;
+  min-height: clamp(180px, 20vh, 240px);
+}
+
+.apex-chart-shell .apexcharts-canvas {
+  margin: 0 auto;
+}
+
+/* ApexCharts: tooltips & axis hints stay readable (parent color must not bleed into floating UI) */
+.apex-chart-shell .apexcharts-tooltip.apexcharts-theme-dark {
+  background: rgba(15, 23, 42, 0.96) !important;
+  border: 1px solid #64748b !important;
+  color: #f1f5f9 !important;
+  border-radius: 10px !important;
+  box-shadow: 0 14px 36px rgba(15, 23, 42, 0.38) !important;
+}
+
+.apex-chart-shell .apexcharts-tooltip.apexcharts-theme-dark .apexcharts-tooltip-title {
+  background: rgba(2, 6, 23, 0.98) !important;
+  color: #f8fafc !important;
+  border-bottom: 1px solid #334155 !important;
+  margin-bottom: 0 !important;
+  font-weight: 600 !important;
+}
+
+.apex-chart-shell .apexcharts-tooltip.apexcharts-theme-dark .apexcharts-tooltip-series-group {
+  background: transparent !important;
+}
+
+.apex-chart-shell .apexcharts-tooltip.apexcharts-theme-dark .apexcharts-tooltip-y-group,
+.apex-chart-shell .apexcharts-tooltip.apexcharts-theme-dark .apexcharts-tooltip-text-y-label,
+.apex-chart-shell .apexcharts-tooltip.apexcharts-theme-dark .apexcharts-tooltip-text-y-value,
+.apex-chart-shell .apexcharts-tooltip.apexcharts-theme-dark .apexcharts-tooltip-text-goals-label,
+.apex-chart-shell .apexcharts-tooltip.apexcharts-theme-dark .apexcharts-tooltip-text-goals-value {
+  color: #f8fafc !important;
+}
+
+.apex-chart-shell .apexcharts-tooltip.apexcharts-theme-light {
+  background: #ffffff !important;
+  border: 1px solid #475569 !important;
+  color: #0f172a !important;
+  border-radius: 10px !important;
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.18) !important;
+}
+
+.apex-chart-shell .apexcharts-tooltip.apexcharts-theme-light .apexcharts-tooltip-title {
+  background: #1e293b !important;
+  color: #f8fafc !important;
+  border-bottom: 1px solid #334155 !important;
+}
+
+.apex-chart-shell .apexcharts-tooltip.apexcharts-theme-light .apexcharts-tooltip-text-y-label,
+.apex-chart-shell .apexcharts-tooltip.apexcharts-theme-light .apexcharts-tooltip-text-y-value {
+  color: #0f172a !important;
+}
+
+.apex-chart-shell .apexcharts-xaxistooltip,
+.apex-chart-shell .apexcharts-yaxistooltip {
+  color: #0f172a !important;
+  background: #f8fafc !important;
+  border: 1px solid #94a3b8 !important;
+  border-radius: 8px !important;
+}
+
+.apex-chart-shell .apexcharts-xaxistooltip.apexcharts-theme-dark,
+.apex-chart-shell .apexcharts-yaxistooltip.apexcharts-theme-dark {
+  color: #f8fafc !important;
+  background: #1e293b !important;
+  border-color: #64748b !important;
+}
+
+.apex-chart-shell .apexcharts-legend-text {
+  color: #334155 !important;
+}
+
+.language-chart-panel--apex {
+  display: grid;
+  grid-template-columns: minmax(260px, 1.1fr) minmax(200px, 320px);
+  gap: clamp(16px, 2vw, 28px);
+  align-items: center;
+}
+
+/* Skills tab: radar left, module stack + average card stacked on the right */
+.language-chart-panel--radar {
+  grid-template-columns: minmax(280px, 1.35fr) minmax(200px, 300px);
+  align-items: start;
+}
+
+.language-radar-chart-column {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.language-radar-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(14px, 1.6vw, 20px);
+  min-width: 0;
+}
+
+.language-radar-avg-card {
+  align-self: stretch;
+  width: 100%;
+  max-width: none;
+  padding: clamp(14px, 1.5vw, 18px) clamp(16px, 1.8vw, 20px);
+  border-radius: 14px;
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  background: linear-gradient(145deg, rgba(240, 249, 255, 0.98) 0%, rgba(224, 242, 254, 0.55) 100%);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.9) inset,
+    0 10px 28px rgba(14, 165, 233, 0.12);
+}
+
+.language-radar-avg-label {
+  display: block;
+  font-size: 11px;
+  font-weight: 750;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #0369a1;
+  margin-bottom: 6px;
+}
+
+.language-radar-avg-value {
+  display: block;
+  font-size: clamp(1.75rem, 2.8vw, 2.25rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  color: #0c4a6e;
+  font-variant-numeric: tabular-nums;
+}
+
+.language-radar-avg-hint {
+  display: block;
+  margin-top: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #64748b;
+}
+
+.language-radar-apex {
+  min-height: clamp(300px, 36vh, 420px);
+  border-radius: 16px;
+  border: 1px solid rgba(226, 232, 240, 0.95);
+  background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.95) inset,
+    0 14px 36px rgba(15, 23, 42, 0.06);
+  padding: clamp(6px, 1vw, 12px) clamp(4px, 0.8vw, 10px);
+}
+
+.language-radar-apex .apexcharts-yaxis {
+  display: none !important;
+}
+
+.language-radar-apex .apexcharts-yaxis text {
+  display: none !important;
+}
+
+.language-radar-apex .apexcharts-datalabels {
+  display: none !important;
+}
+
+.language-radar-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: clamp(260px, 32vh, 360px);
+  padding: 24px;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 600;
+  color: #64748b;
+  line-height: 1.55;
+}
+
+.language-apex-wrap {
+  width: 100%;
+  min-height: clamp(200px, 26vh, 280px);
+}
+
+@media (max-width: 900px) {
+  .language-chart-panel--apex {
+    grid-template-columns: 1fr;
+  }
+
+  .language-chart-panel--radar {
+    grid-template-columns: 1fr;
+  }
+
+  .language-radar-avg-card {
+    max-width: none;
+  }
+
+  .cq-dash-tabs-list {
+    max-width: none;
+  }
+}
+
+@media (max-width: 520px) {
+  .cq-dash-tabs-list {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    max-width: none;
+    border-radius: 14px;
+  }
+
+  .cq-dash-tabs-trigger {
+    flex: 1 0 auto;
+    min-width: 0;
+    text-align: center;
+    padding-inline: 12px;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Welcome / signed-in line (admin, SME, learner dashboards)
+   -------------------------------------------------------------------------- */
+
+.cq-dashboard-welcome-block {
+  margin: 0;
+  margin-top: 4px;
+  font-size: clamp(15px, 1.28vw, 17px);
+  line-height: 1.5;
+  padding: 0.55rem 0.9rem 0.55rem 1rem;
+  border-radius: 10px;
+  background: linear-gradient(135deg, rgba(37, 99, 235, 0.11), rgba(14, 165, 233, 0.06));
+  border: 1px solid rgba(37, 99, 235, 0.24);
+  box-shadow: 0 2px 14px rgba(29, 78, 216, 0.1);
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.cq-dashboard-welcome-accent {
+  font-weight: 700;
+  color: #1d4ed8;
+  letter-spacing: -0.015em;
+}
+
+.cq-dashboard-welcome-muted {
+  font-weight: 500;
+  color: #475569;
+}
+
+.cq-dashboard-welcome-accent--inline {
+  display: inline-block;
+  padding: 0.1em 0.42em 0.12em;
+  margin-left: 0.06em;
+  border-radius: 8px;
+  background: linear-gradient(135deg, rgba(37, 99, 235, 0.12), rgba(14, 165, 233, 0.06));
+  border: 1px solid rgba(37, 99, 235, 0.22);
+  box-shadow: 0 1px 8px rgba(29, 78, 216, 0.08);
+}
+
+p.dashboard-subtitle.cq-dashboard-welcome-block {
+  font-size: clamp(15px, 1.28vw, 17px);
+}
+
+/* Learner dashboard: header matches admin/SME shell (single column, no batch filters) */
+.cq-dashboard-container.user-home-dashboard .dashboard-header {
+  width: 100%;
+}
+
+.cq-dashboard-container.user-home-dashboard .dashboard-header .header-left {
+  min-width: 0;
+  flex: 1;
+}

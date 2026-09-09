@@ -1,0 +1,135 @@
+/* Glassmorphism toast overrides. Imported after react-toastify so these styles win. */
+.Toastify__toast-container {
+  --toast-glass-success: rgba(16, 185, 129, 0.72);
+  --toast-glass-error: rgba(239, 68, 68, 0.72);
+  --toast-glass-info: rgba(37, 99, 235, 0.72);
+  --toast-glass-warning: rgba(245, 158, 11, 0.72);
+  --toast-glass-default: rgba(71, 85, 105, 0.72);
+  --toast-glass-surface: rgba(15, 23, 42, 0.72);
+  --toast-glass-border: rgba(255, 255, 255, 0.34);
+  --toast-glass-highlight: rgba(255, 255, 255, 0.22);
+  --toast-glass-text: #ffffff;
+  --toastify-toast-width: min(380px, calc(100vw - 32px));
+}
+
+.Toastify__toast {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  min-height: 68px;
+  padding: 15px 42px 15px 16px;
+  border: 1px solid var(--toast-glass-border);
+  border-radius: 18px;
+  color: var(--toast-glass-text);
+  font-family: inherit;
+  font-weight: 650;
+  letter-spacing: 0;
+  background:
+    linear-gradient(135deg, var(--toast-glass-highlight), rgba(255, 255, 255, 0.06)),
+    linear-gradient(135deg, var(--toast-accent, var(--toast-glass-default)), var(--toast-glass-surface));
+  box-shadow:
+    0 20px 45px rgba(15, 23, 42, 0.22),
+    0 8px 18px rgba(15, 23, 42, 0.16),
+    inset 0 1px 0 rgba(255, 255, 255, 0.28);
+  backdrop-filter: blur(18px) saturate(1.35);
+  -webkit-backdrop-filter: blur(18px) saturate(1.35);
+}
+
+.Toastify__toast::before {
+  content: "";
+  position: absolute;
+  inset: 10px auto 10px 0;
+  width: 4px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.86);
+  box-shadow: 0 0 18px var(--toast-accent, var(--toast-glass-default));
+}
+
+.Toastify__toast::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(circle at 18% 0%, rgba(255, 255, 255, 0.32), transparent 32%),
+    radial-gradient(circle at 100% 100%, var(--toast-accent, transparent), transparent 44%);
+  opacity: 0.42;
+  pointer-events: none;
+}
+
+.Toastify__toast--success {
+  --toast-accent: var(--toast-glass-success);
+}
+
+.Toastify__toast--error {
+  --toast-accent: var(--toast-glass-error);
+}
+
+.Toastify__toast--info {
+  --toast-accent: var(--toast-glass-info);
+}
+
+.Toastify__toast--warning {
+  --toast-accent: var(--toast-glass-warning);
+}
+
+.Toastify__toast-body {
+  align-items: center;
+  gap: 10px;
+  padding: 0;
+  line-height: 1.4;
+}
+
+.Toastify__toast-icon {
+  width: 26px;
+  margin-inline-end: 0;
+  padding: 5px;
+  border-radius: 999px;
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.18);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.18);
+}
+
+.Toastify__close-button {
+  top: 12px;
+  right: 12px;
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  color: #ffffff;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.14);
+  opacity: 0.78;
+}
+
+.Toastify__close-button:hover,
+.Toastify__close-button:focus {
+  background: rgba(255, 255, 255, 0.24);
+  opacity: 1;
+}
+
+.Toastify__progress-bar--wrp {
+  height: 3px;
+  border-radius: 0 0 18px 18px;
+  background: rgba(255, 255, 255, 0.16);
+}
+
+.Toastify__progress-bar {
+  background: rgba(255, 255, 255, 0.74);
+  box-shadow: 0 0 14px rgba(255, 255, 255, 0.58);
+  opacity: 1;
+}
+
+@media (max-width: 480px) {
+  .Toastify__toast-container {
+    width: 100vw;
+    padding: 10px;
+  }
+
+  .Toastify__toast {
+    width: 100%;
+    margin-bottom: 10px;
+    border-radius: 16px;
+  }
+}
